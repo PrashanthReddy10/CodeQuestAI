@@ -1,0 +1,8 @@
+{
+  "name": "codequest-ai",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Gamified coding education platform with optional serverless AI tutor",
+  "scripts": { "dev": "vercel dev" }
+}

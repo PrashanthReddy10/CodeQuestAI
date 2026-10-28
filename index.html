@@ -10,6 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css" />
 </head>
 <body>
   <div class="app-shell">
@@ -28,6 +30,10 @@
         <button class="nav-item" data-view="learn"><span>⌘</span> Learning paths</button>
         <button class="nav-item" data-view="challenges"><span>⚡</span> Daily challenge</button>
         <button class="nav-item" data-view="achievements"><span>♜</span> Achievements</button>
+        <button class="nav-item" data-view="playground"><span>⌨</span> Python playground</button>
+        <button class="nav-item" data-view="tutor"><span>✧</span> AI tutor</button>
+        <button class="nav-item" data-view="leaderboard"><span>♛</span> Leaderboard</button>
+        <button class="nav-item" data-view="account"><span>◎</span> Accounts & sync</button>
       </nav>
       <div class="sidebar-bottom">
         <div class="side-note"><span class="sparkle">✦</span><strong>Small steps.<br/>Big futures.</strong><p>Your next skill is one quest away.</p></div>
@@ -51,8 +57,9 @@
 
         <div class="stats-grid">
           <article class="stat-card"><div class="stat-top"><span class="stat-icon purple">✦</span><span class="stat-label">TOTAL XP</span></div><div class="stat-value"><span id="xpValue">0</span><small>XP</small></div><div class="stat-foot">Every lesson counts.</div></article>
-          <article class="stat-card"><div class="stat-top"><span class="stat-icon orange">♨</span><span class="stat-label">DAY STREAK</span></div><div class="stat-value"><span id="streakValue">0</span><small>days</small></div><div class="stat-foot">Build a learning habit.</div></article>
+          <article class="stat-card"><div class="stat-top"><span class="stat-icon orange">♨</span><span class="stat-label">DAY STREAK</span></div><div class="stat-value"><span id="streakValue">0</span><small>days</small></div><div class="stat-foot">Longest: <span id="longestStreakValue">0</span> days · once per local day</div></article>
           <article class="stat-card"><div class="stat-top"><span class="stat-icon green">✓</span><span class="stat-label">QUESTS DONE</span></div><div class="stat-value"><span id="completedValue">0</span><small>/ 6</small></div><div class="stat-foot">One quest at a time.</div></article>
+          <article class="stat-card level-card"><div class="stat-top"><span class="stat-icon purple">⬆</span><span class="stat-label">CURRENT LEVEL</span></div><div class="stat-value"><span id="levelValue">1</span><small>LEVEL</small></div><div class="progress-track level-track"><span id="levelProgressBar"></span></div><div class="stat-foot"><span id="levelProgressText">0 / 100 XP to next level</span></div></article>
         </div>
 
         <div class="section-heading"><div><div class="eyebrow">YOUR ROADMAP</div><h2>Choose your next quest</h2></div><button class="text-button" data-goto="learn">View all paths <span>↗</span></button></div>
@@ -62,6 +69,7 @@
           <article class="path-card"><div class="path-card-top"><span class="path-symbol web-symbol">⌘</span><span class="difficulty">BEGINNER · 1 QUEST</span></div><h3>Web Creator</h3><p>Discover how HTML, CSS, and JavaScript bring websites to life.</p><div class="progress-label"><span>PATH PROGRESS</span><b id="webProgressText">0%</b></div><div class="progress-track"><span id="webProgressBar"></span></div><button class="secondary-button path-start" data-path="web">Start creating <span>→</span></button></article>
         </div>
 
+        <div class="quick-actions"><button class="secondary-button" data-view="playground">⌨ Open Python playground <span>→</span></button><button class="secondary-button" data-view="tutor">✧ Ask the AI tutor <span>→</span></button><button class="secondary-button" data-view="leaderboard">♛ View leaderboard <span>→</span></button></div>
         <div class="bottom-grid">
           <article class="panel challenge-panel"><div class="panel-heading"><div><div class="eyebrow">QUICK WIN</div><h2>Daily code challenge</h2></div><span class="challenge-bolt">ϟ</span></div><p>Test your logic with a bite-sized question. Get it right to earn bonus XP.</p><div class="challenge-preview"><span class="code-tag">LOGIC / 01</span><strong>What does a variable do?</strong><button class="text-button" data-goto="challenges">Take challenge <span>→</span></button></div></article>
           <article class="panel quote-panel"><div class="quote-mark">“</div><p>Every expert was once a beginner who kept going.</p><span>THE CODEQUEST MINDSET</span><div class="quote-dots"><i></i><i></i><i></i></div></article>
@@ -77,7 +85,7 @@
         <div class="page-intro"><div class="eyebrow"><span class="eyebrow-line"></span> THINK. TRY. LEVEL UP.</div><h1>Daily challenge</h1><p class="subhead">A quick question to sharpen your programming instincts.</p></div>
         <article class="quiz-card">
           <div class="quiz-top"><span class="code-tag">QUEST 01 · FUNDAMENTALS</span><span class="xp-chip">+30 XP</span></div>
-          <h2>What is a variable used for in programming?</h2><p class="quiz-hint">Choose the best answer. You can retry if you miss it.</p>
+          <h2 id="challengeQuestion">What is a variable used for in programming?</h2><p class="quiz-hint" id="challengeHint">Choose the best answer. You can retry if you miss it.</p>
           <div class="answer-list" id="answerList">
             <button class="answer-option" data-answer="a"><span>A</span> To store a value that a program can use</button>
             <button class="answer-option" data-answer="b"><span>B</span> To make the computer physically faster</button>
@@ -95,6 +103,31 @@
         <div class="achievement-grid" id="achievementGrid"></div>
       </section>
 
+
+      <section class="view" id="playgroundView">
+        <div class="page-intro"><div class="eyebrow"><span class="eyebrow-line"></span> BUILD. RUN. EXPERIMENT.</div><h1>Python playground</h1><p class="subhead">Write Python, run it in an isolated browser worker, and learn by trying things.</p></div>
+        <div class="playground-toolbar"><label for="starterSelect">Starter example</label><select id="starterSelect"><option value="hello">Hello World</option><option value="variables">Variables & types</option><option value="conditions">Conditions</option><option value="loops">Loops</option><option value="functions">Functions</option><option value="lists">Lists</option></select><span class="runtime-status" id="runtimeStatus">Python runtime loads on first run</span></div>
+        <div class="playground-grid"><section class="editor-panel"><div class="editor-top"><span><i></i><i></i><i></i></span><strong>main.py</strong><span class="editor-lang">PYTHON</span></div><div class="editor-wrap"><pre id="lineNumbers" aria-hidden="true">1</pre><textarea id="codeEditor" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Python code editor">print("Hello, CodeQuest!")</textarea></div><div class="editor-actions"><button class="primary-button" id="runCode">▶ Run code</button><button class="secondary-button" id="resetCode">Reset code</button><button class="secondary-button" id="sendCodeToTutor">Ask tutor about code</button></div></section><section class="console-panel"><div class="console-heading"><strong>OUTPUT CONSOLE</strong><button class="text-button" id="clearOutput">Clear</button></div><pre id="codeOutput" aria-live="polite">Your program output will appear here.
+
+Tip: start with print("Hello, world!")</pre></section></div>
+        <p class="small-note">The Python runtime is downloaded from the Pyodide CDN and needs an internet connection. Code runs in a Web Worker, not the page's main thread. This is a practical learning sandbox, not a production-grade security boundary.</p><button class="text-button" id="returnToLesson" hidden>← Return to lesson</button>
+      </section>
+      <section class="view" id="tutorView">
+        <div class="page-intro"><div class="eyebrow"><span class="eyebrow-line"></span> YOUR CODING COMPANION</div><h1>AI coding tutor</h1><p class="subhead">Ask questions, get hints, and understand the why—not just the answer.</p></div>
+        <div class="tutor-mode-row"><span id="tutorMode" class="mode-pill demo">● DEMO MODE</span><span class="small-note">Connected mode requires the optional server-side API setup in README.md.</span><button class="text-button" id="newTutorChat">New conversation ↺</button></div>
+        <div class="tutor-layout"><div class="tutor-chat panel"><div id="tutorMessages" class="tutor-messages" aria-live="polite"><div class="chat-message assistant"><strong>CodeQuest Tutor</strong><p>Hey! I can help you learn. In Demo Mode, replies are rule-based examples—not a live AI model. Try a suggested question below.</p></div></div><div class="suggested-prompts"><button data-prompt="Explain this code in simple words.">Explain this code</button><button data-prompt="Give me a hint instead of the answer.">Give me a hint</button><button data-prompt="Why am I getting this error?">Debug an error</button><button data-prompt="Give me a similar practice question.">Practice question</button><button data-prompt="Explain this concept with an example.">Explain a concept</button></div><form id="tutorForm" class="tutor-form"><textarea id="tutorInput" rows="2" placeholder="Ask a coding question…" required></textarea><button class="primary-button" id="sendTutor" type="submit">Send ↗</button></form></div><aside class="panel tutor-side"><h3>Learn actively</h3><p>Share your code or error message. The tutor should help you reason through it instead of encouraging blind copying.</p><div class="tutor-tip"><strong>Try asking</strong><p>“Why does range(3) print 0, 1, 2?”</p></div><button class="secondary-button" data-view="playground">Open playground →</button></aside></div>
+      </section>
+      <section class="view" id="accountView">
+        <div class="page-intro"><div class="eyebrow"><span class="eyebrow-line"></span> YOUR PROGRESS, YOUR WAY</div><h1>Accounts & sync</h1><p class="subhead">Keep learning as a guest or prepare the project for secure accounts.</p></div>
+        <div class="account-hero"><div class="account-avatar">P</div><div><span class="mode-pill connected">● GUEST MODE ACTIVE</span><h2>Quest Explorer</h2><p>Your progress is saved in this browser only. No account or password is being collected.</p></div></div>
+        <div class="account-options"><article class="panel account-option"><div class="badge-icon">↗</div><h3>Sign in</h3><p>Cloud sign-in is not connected yet. Connect Supabase or Firebase before collecting login credentials.</p><a class="primary-button" href="README.md#authentication-and-cloud-progress-setup">View setup guide <span>→</span></a></article><article class="panel account-option"><div class="badge-icon">✦</div><h3>Create account</h3><p>Secure registration requires a trusted authentication provider and database access rules. This project does not fake account creation.</p><a class="secondary-button" href="README.md#authentication-and-cloud-progress-setup">Configure accounts <span>→</span></a></article><article class="panel account-option"><div class="badge-icon">⌂</div><h3>Continue as guest</h3><p>Play quests, run Python, earn XP, and use the demo tutor without registering.</p><button class="primary-button" data-view="dashboard">Continue learning <span>→</span></button></article></div>
+        <div class="tip-box"><span>✦</span><div><strong>Privacy note</strong><p>Guest progress stays in local browser storage. Clearing site data may erase it. Never publish API keys or admin credentials in frontend files.</p></div></div>
+      </section>
+      <section class="view" id="leaderboardView">
+        <div class="page-intro"><div class="eyebrow"><span class="eyebrow-line"></span> FRIENDLY COMPETITION</div><h1>Leaderboard</h1><p class="subhead">Celebrate progress, not perfection.</p></div>
+        <div class="leaderboard-banner"><strong>LOCAL DEMO LEADERBOARD</strong><p>Sample players are illustrative only. Your row reflects this browser's local progress; this is not a global ranking.</p></div><div id="leaderboardList" class="leaderboard-list"></div>
+        <div class="panel setup-panel"><h3>Want a real shared leaderboard?</h3><p>A shared leaderboard needs authenticated users, a database, and server-side score validation. Setup notes are included in the README; no fake global scores are shown here.</p></div>
+      </section>
       <section class="view" id="lessonView">
         <button class="back-button" id="backToLearn">← Back to learning paths</button>
         <div id="lessonContent"></div>
@@ -103,6 +136,8 @@
     </main>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
