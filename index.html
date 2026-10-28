@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#101322" />
+  <meta name="description" content="CodeQuest AI — a gamified learning space for Python, coding, and AI." />
+  <title>CodeQuest AI — Learn. Build. Level Up.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="CodeQuest AI home">
+        <span class="brand-mark">CQ<span>✦</span></span>
+        <span class="brand-name">CodeQuest <em>AI</em></span>
+      </a>
+      <div class="profile-mini">
+        <div class="avatar">P</div>
+        <div><strong>Quest Explorer</strong><small>Level <span id="sideLevel">1</span> learner</small></div>
+        <span class="online-dot"></span>
+      </div>
+      <nav class="nav-links" aria-label="Main navigation">
+        <button class="nav-item active" data-view="dashboard"><span>◈</span> Dashboard</button>
+        <button class="nav-item" data-view="learn"><span>⌘</span> Learning paths</button>
+        <button class="nav-item" data-view="challenges"><span>⚡</span> Daily challenge</button>
+        <button class="nav-item" data-view="achievements"><span>♜</span> Achievements</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="side-note"><span class="sparkle">✦</span><strong>Small steps.<br/>Big futures.</strong><p>Your next skill is one quest away.</p></div>
+        <button class="nav-item" id="resetProgress"><span>↺</span> Reset progress</button>
+        <div class="sidebar-footer">MADE FOR CURIOUS MINDS <span>© 2026</span></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-brand" id="mobileMenu">☰ <b>CodeQuest <em>AI</em></b></button>
+        <div class="breadcrumb">LEARNING SPACE <span>/</span> <b id="crumb">DASHBOARD</b></div>
+        <div class="top-actions"><span class="date-pill" id="todayLabel">YOUR LEARNING JOURNEY</span><div class="top-avatar">P</div></div>
+      </header>
+
+      <section class="view active" id="dashboardView">
+        <div class="welcome-row">
+          <div><div class="eyebrow"><span class="eyebrow-line"></span> YOUR NEXT CHAPTER STARTS HERE</div><h1>Hey, Explorer <span class="wave">✦</span></h1><p class="subhead">Turn curiosity into code. Pick a quest and keep moving forward.</p></div>
+          <div class="hero-orb" aria-hidden="true"><div class="orb-ring ring-one"></div><div class="orb-ring ring-two"></div><div class="orb-core">⌘</div><span class="orb-star star-a">✦</span><span class="orb-star star-b">✧</span><span class="orb-star star-c">·</span></div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span class="stat-icon purple">✦</span><span class="stat-label">TOTAL XP</span></div><div class="stat-value"><span id="xpValue">0</span><small>XP</small></div><div class="stat-foot">Every lesson counts.</div></article>
+          <article class="stat-card"><div class="stat-top"><span class="stat-icon orange">♨</span><span class="stat-label">DAY STREAK</span></div><div class="stat-value"><span id="streakValue">0</span><small>days</small></div><div class="stat-foot">Build a learning habit.</div></article>
+          <article class="stat-card"><div class="stat-top"><span class="stat-icon green">✓</span><span class="stat-label">QUESTS DONE</span></div><div class="stat-value"><span id="completedValue">0</span><small>/ 6</small></div><div class="stat-foot">One quest at a time.</div></article>
+        </div>
+
+        <div class="section-heading"><div><div class="eyebrow">YOUR ROADMAP</div><h2>Choose your next quest</h2></div><button class="text-button" data-goto="learn">View all paths <span>↗</span></button></div>
+        <div class="path-grid">
+          <article class="path-card featured"><div class="path-card-top"><span class="path-symbol python-symbol">Py</span><span class="difficulty">BEGINNER · 3 QUESTS</span></div><h3>Python Foundations</h3><p>Learn the building blocks of programming, one small win at a time.</p><div class="progress-label"><span>PATH PROGRESS</span><b id="pythonProgressText">0%</b></div><div class="progress-track"><span id="pythonProgressBar"></span></div><button class="primary-button path-start" data-path="python">Continue path <span>→</span></button></article>
+          <article class="path-card"><div class="path-card-top"><span class="path-symbol ai-symbol">✳</span><span class="difficulty">BEGINNER · 2 QUESTS</span></div><h3>AI Explorers</h3><p>Understand artificial intelligence and how machine learning learns patterns.</p><div class="progress-label"><span>PATH PROGRESS</span><b id="aiProgressText">0%</b></div><div class="progress-track"><span id="aiProgressBar"></span></div><button class="secondary-button path-start" data-path="ai">Explore path <span>→</span></button></article>
+          <article class="path-card"><div class="path-card-top"><span class="path-symbol web-symbol">⌘</span><span class="difficulty">BEGINNER · 1 QUEST</span></div><h3>Web Creator</h3><p>Discover how HTML, CSS, and JavaScript bring websites to life.</p><div class="progress-label"><span>PATH PROGRESS</span><b id="webProgressText">0%</b></div><div class="progress-track"><span id="webProgressBar"></span></div><button class="secondary-button path-start" data-path="web">Start creating <span>→</span></button></article>
+        </div>
+
+        <div class="bottom-grid">
+          <article class="panel challenge-panel"><div class="panel-heading"><div><div class="eyebrow">QUICK WIN</div><h2>Daily code challenge</h2></div><span class="challenge-bolt">ϟ</span></div><p>Test your logic with a bite-sized question. Get it right to earn bonus XP.</p><div class="challenge-preview"><span class="code-tag">LOGIC / 01</span><strong>What does a variable do?</strong><button class="text-button" data-goto="challenges">Take challenge <span>→</span></button></div></article>
+          <article class="panel quote-panel"><div class="quote-mark">“</div><p>Every expert was once a beginner who kept going.</p><span>THE CODEQUEST MINDSET</span><div class="quote-dots"><i></i><i></i><i></i></div></article>
+        </div>
+      </section>
+
+      <section class="view" id="learnView">
+        <div class="page-intro"><div class="eyebrow"><span class="eyebrow-line"></span> LEARN BY DOING</div><h1>Learning paths</h1><p class="subhead">Short lessons, clear concepts, and a reason to come back tomorrow.</p></div>
+        <div class="lesson-list" id="lessonList"></div>
+      </section>
+
+      <section class="view" id="challengesView">
+        <div class="page-intro"><div class="eyebrow"><span class="eyebrow-line"></span> THINK. TRY. LEVEL UP.</div><h1>Daily challenge</h1><p class="subhead">A quick question to sharpen your programming instincts.</p></div>
+        <article class="quiz-card">
+          <div class="quiz-top"><span class="code-tag">QUEST 01 · FUNDAMENTALS</span><span class="xp-chip">+30 XP</span></div>
+          <h2>What is a variable used for in programming?</h2><p class="quiz-hint">Choose the best answer. You can retry if you miss it.</p>
+          <div class="answer-list" id="answerList">
+            <button class="answer-option" data-answer="a"><span>A</span> To store a value that a program can use</button>
+            <button class="answer-option" data-answer="b"><span>B</span> To make the computer physically faster</button>
+            <button class="answer-option" data-answer="c"><span>C</span> To automatically fix every bug</button>
+            <button class="answer-option" data-answer="d"><span>D</span> To connect a computer to Wi-Fi</button>
+          </div>
+          <div class="quiz-feedback" id="quizFeedback" aria-live="polite">Choose an answer to check your understanding.</div>
+          <div class="quiz-actions"><button class="secondary-button" id="tryAgain">Try again</button><span class="quiz-footnote">No pressure — learning is the point.</span></div>
+        </article>
+        <div class="tip-box"><span>✦</span><div><strong>Quest tip</strong><p>Try explaining your answer in your own words. If you can teach it, you probably understand it.</p></div></div>
+      </section>
+
+      <section class="view" id="achievementsView">
+        <div class="page-intro"><div class="eyebrow"><span class="eyebrow-line"></span> YOUR PROGRESS, CELEBRATED</div><h1>Achievements</h1><p class="subhead">Milestones are proof that you showed up and kept learning.</p></div>
+        <div class="achievement-grid" id="achievementGrid"></div>
+      </section>
+
+      <section class="view" id="lessonView">
+        <button class="back-button" id="backToLearn">← Back to learning paths</button>
+        <div id="lessonContent"></div>
+      </section>
+      <footer class="main-footer"><span>CODEQUEST AI <b>✦</b></span><span>Learn at your pace. Build your future.</span><span>BUILT WITH CURIOSITY</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
